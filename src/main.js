@@ -1,34 +1,38 @@
-import {createSiteMenuTemplate} from "./components/site-menu.js";
-import {createSortingTemplate} from "./components/sorting";
-import {createFilterTemplate} from "./components/filter.js";
-import {createTaskTemplate} from "./components/task.js";
-import {createTaskEditTemplate} from "./components/task-edit.js";
-import {createLoadMoreButtonTemplate} from "./components/load-more-button.js";
-import {createBoardTemplate} from "./components/board.js";
+import {createSiteMenu} from "./components/site-menu.js";
+import {createSorting} from "./components/sorting";
+import {createFilter} from "./components/filter.js";
+import {createTask} from "./components/task.js";
+import {createTaskEdit} from "./components/task-edit.js";
+import {createLoadButton} from "./components/load-more-button.js";
+import {createBoard} from "./components/board.js";
 
-const TASK_COUNT = 7;
+const TASK_COUNT = 3;
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const siteMainElement = document.querySelector(`.main`);
-const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+const siteMain = document.querySelector(`.main`);
+const siteHeader = siteMain.querySelector(`.main__control`);
 
-render(siteHeaderElement, createSiteMenuTemplate(), `beforeend`);
-render(siteMainElement, createFilterTemplate(), `beforeend`);
-render(siteMainElement, createBoardTemplate(), `beforeend`);
+render(siteHeader, createSiteMenu(), `beforeend`);
+render(siteMain, createFilter(), `beforeend`);
+render(siteMain, createBoard(), `beforeend`);
 
-const boardElement = siteMainElement.querySelector(`.board`);
-const taskListElement = siteMainElement.querySelector(`.board__tasks`);
+const board = siteMain.querySelector(`.board`);
+const taskList = siteMain.querySelector(`.board__tasks`);
 
-render(boardElement, createSortingTemplate(), `afterbegin`);
-render(taskListElement, createTaskEditTemplate(), `beforeend`);
+render(board, createSorting(), `afterbegin`);
+render(taskList, createTaskEdit(), `beforeend`);
 
-const taskCollection = [];
-for (let i = 0; i < TASK_COUNT; i++) {
-  taskCollection.push(createTaskTemplate());
-}
-taskCollection.forEach(() => render(taskListElement, createTaskTemplate(), `beforeend`));
+Array(TASK_COUNT).fill().forEach(() => render(taskList, createTask(), `beforeend`));
 
-render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
+render(board, createLoadButton(), `beforeend`);
+
+/*
+МИХАИЛУ:
+Я в этом пулреквесте исправил имена переменных в соответствии с вашими рекомендациями, но в следующем модуле обратно верну "авторские", как мы с вами и договорились, чтобы:
+1) Уважительно отнестись к их (авторы учебного проекта) коду))
+2) Чтобы мне не путаться в каждом модуле учебного проекта
+В личном же буду этих рекомендаций придерживаться. Тем более мне самому не нравиться везде городить *Element
+*/
