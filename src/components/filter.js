@@ -1,61 +1,30 @@
-export const createFilter = () => {
+const createFilterMarkup = (filter, isChecked) => {
+  const {name, count} = filter; // вытаскиваем из объекта значения и кладём их в переменные под тем же именем
+
+  return (
+    `<input
+      type="radio"
+      id="filter__${name}"
+      class="filter__input visually-hidden"
+      name="filter"
+      ${isChecked ? `checked` : ``}
+    />
+    <label for="filter__${name}" class="filter__label">
+      ${name} <span class="filter__${name}-count">${count}</span></label
+    >`
+  );
+};
+
+export const createFilterTemplate = (filters) => {
+  const filtersMarkup = filters.map((it, i) => createFilterMarkup(it, i === 0)).join(`\n`);
+  // А вот тут я что-то выехал зачем этот фокус с индексом элемента и сравнение его с нулём.
+  // Типа первый элемент вернёт истину... Чтобы чекед был всегда первый элемент чтоли?
+  // (это я догадываюсь, что за этим, но упустил момент, как это произойдёт, на каком этапе)
+  // На первом применении функции createFilterMarkup... Первый аргумент - объект, второй - индекс...
+  // То есть на первом прогоне передаётся в функцию во второй параметр 0 === 0 (<- прикольный смайлик)...
+  // И возвращается значение true... Тогда тернарный оператор вернёт `checked`... блин, нахрена так сложно делать >_<
+
   return `<section class="main__filter filter container">
-    <input
-      type="radio"
-      id="filter__all"
-      class="filter__input visually-hidden"
-      name="filter"
-      checked
-    />
-    <label for="filter__all" class="filter__label">
-      All <span class="filter__all-count">13</span></label
-    >
-    <input
-      type="radio"
-      id="filter__overdue"
-      class="filter__input visually-hidden"
-      name="filter"
-      disabled
-    />
-    <label for="filter__overdue" class="filter__label"
-      >Overdue <span class="filter__overdue-count">0</span></label
-    >
-    <input
-      type="radio"
-      id="filter__today"
-      class="filter__input visually-hidden"
-      name="filter"
-      disabled
-    />
-    <label for="filter__today" class="filter__label"
-      >Today <span class="filter__today-count">0</span></label
-    >
-    <input
-      type="radio"
-      id="filter__favorites"
-      class="filter__input visually-hidden"
-      name="filter"
-    />
-    <label for="filter__favorites" class="filter__label"
-      >Favorites <span class="filter__favorites-count">1</span></label
-    >
-    <input
-      type="radio"
-      id="filter__repeating"
-      class="filter__input visually-hidden"
-      name="filter"
-    />
-    <label for="filter__repeating" class="filter__label"
-      >Repeating <span class="filter__repeating-count">1</span></label
-    >
-    <input
-      type="radio"
-      id="filter__archive"
-      class="filter__input visually-hidden"
-      name="filter"
-    />
-    <label for="filter__archive" class="filter__label"
-      >Archive <span class="filter__archive-count">115</span></label
-    >
+    ${filtersMarkup}
   </section>`;
 };
